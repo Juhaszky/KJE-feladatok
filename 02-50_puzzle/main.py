@@ -26,7 +26,7 @@ def process_paragraphs(paragraphs):
         elif paragraph.text.startswith("The correct solution:"):
             code = "\n".join(python_code_lines)
             result_value = execute_with_timeout(code, timeout=2)
-            if (result_value is not ""):
+            if (result_value != ""):
                 answers.append(result_value)
             else:
                 answers.append("Syntax error!")
