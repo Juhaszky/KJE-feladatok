@@ -5,6 +5,8 @@ Kodolányi János Egyetem során elkészített feladataim.
   - parancs: "node main.js"
 # 02-50_puzzle:
   - Python szükséges a futtatáshoz!!! (nekem 3.11)!
+  - Futtatás előtt telepíteni kell a pythong docx library-t:
+    - Telepítéséhez futtasd az alábbi parancsot: <b>pip install python-docx</b>
   - parancs a futtatáshoz: "python main.py"
   - Működés:
       A docx-ben az alábbi struktúra alapján szerepelnek a feladatok: <br>
