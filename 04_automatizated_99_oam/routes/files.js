@@ -5,7 +5,6 @@ const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-/* GET users listing. */
 router.post('/upload', upload.single('file'), (req, res, next) => {
     try {
         const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
