@@ -40,19 +40,34 @@ const getPlainColumnMap = (jsonData) => {
 const startNinetyNineMethod = (columnMap) => {
     const columnValuesAfterSwap = [];
     Object.entries(columnMap).forEach(([columnNumber, columnValue]) => {
-        const originalValues = columnValue;
+        const originalValues = columnValue.reverse();
         console.log('beforeswap', originalValues);
         const swapNumber = getSwapOptionsForColumn(columnValue);
-        let swapCounter = 0;
-        originalValues.forEach((value, index) => {
-            if (value === index + 2) { // Check if the value is one more than its index
-                originalValues[index] = index + 1; // Swap the value to its preceding value
-                swapCounter++;
-            }
-        });
+        if (swapNumber > 0) {
+            let swapCounter = 0;
+            originalValues.forEach((value, index) => {
+                const numToSwap = value;
+                if (haveSwapPairs(originalValues, numToSwap)) {
+                    //TODO: Improve swap logic here
+                    
+                    // originalValues.forEach((value, index) => {
+                    //     if (swapCounter === swapNumber) return;
+                    //     if (value === numToSwap + 1) { // Check if the value is one more than its index
+                    //         originalValues[index] = numToSwap; // Swap the value to its preceding value
+                    //         swapCounter++;
+                    //     }
+                    // });
+                };
+            });
+        }
+
         console.log('afterswap', originalValues);
     });
 };
+const haveSwapPairs = (values, forSwap) => {
+    return values.includes(forSwap + 1);
+}
+
 const getSwapOptionsForColumn = (colValues) => {
     const swapAmount = new Set(colValues);
     return swapAmount.size - 1;
