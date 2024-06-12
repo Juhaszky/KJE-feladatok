@@ -36,40 +36,58 @@ const getPlainColumnMap = (jsonData) => {
     const plainColumnMap = Object.fromEntries(colMap);
     return plainColumnMap;
 }
+
 const startNinetyNineMethod = (columnMap) => {
-    const columnValuesAfterSwap = [];
     Object.entries(columnMap).forEach(([columnNumber, columnValue]) => {
-        const originalValues = columnValue.reverse();
+        const originalValues = [...columnValue].reverse();
         console.log('beforeswap', originalValues);
-        const swapNumber = getSwapOptionsForColumn(columnValue);
+        const swapNumber = getAvailabelSwapAmount(columnValue);
         if (swapNumber > 0) {
             let swapCounter = 0;
-            originalValues.forEach((value, index) => {
-                const numToSwap = value;
-                if (haveSwapPairs(originalValues, numToSwap)) {
-                    //TODO: Improve swap logic here
-                    
-                    // originalValues.forEach((value, index) => {
-                    //     if (swapCounter === swapNumber) return;
-                    //     if (value === numToSwap + 1) { // Check if the value is one more than its index
-                    //         originalValues[index] = numToSwap; // Swap the value to its preceding value
-                    //         swapCounter++;
-                    //     }
-                    // });
-                };
-            });
-        }
+            const swapHelperMap = getSwapHelperMap(originalValues);
+            if (canSwap(swapHelperMap)) {
+                const mapEntries = Array.from(swapHelperMap.entries());
+                for (let i = 0; i < mapEntries.length - 1; i++) {
+                    let tmpValues = [...originalValues];
+                    const [currentValue, swapIndexes] = mapEntries[i];
+                    const [nextValue, nextValueIndexes] = mapEntries[i + 1];
 
+                    nextValueIndexes.forEach(index => {
+                        tmpValues[index] = currentValue;
+                    });
+
+                    swapCounter++
+                    const tmpResult = columnMap;
+                    tmpResult[columnNumber] = tmpValues;
+                    console.log(tmpResult)
+                }
+            };
+        }
         console.log('afterswap', originalValues);
     });
 };
-const haveSwapPairs = (values, forSwap) => {
-    return values.includes(forSwap + 1);
+
+const canSwap = (helper) => {
+    return helper.size > 1;
 }
 
-const getSwapOptionsForColumn = (colValues) => {
+const getAvailabelSwapAmount = (colValues) => {
     const swapAmount = new Set(colValues);
     return swapAmount.size - 1;
 }
+
+const getSwapHelperMap = (colValues) => {
+    const swapMap = new Map();
+    for (let i = 0; i < colValues.length; i++) {
+        if (swapMap.has(colValues[i])) {
+            swapMap.get(colValues[i]).push(i);
+        } else {
+            swapMap.set(colValues[i], [i]);
+        }
+
+    }
+    return swapMap;
+};
+
 
 module.exports = router;
